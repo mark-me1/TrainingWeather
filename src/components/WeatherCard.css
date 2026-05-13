@@ -1,0 +1,81 @@
+/* WeatherCard.css (Dense Grid Version) */
+.dense-card {
+    background-color: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 6px;
+    padding: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.25rem;
+    box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+    transition: transform 0.1s ease;
+}
+
+.dense-card:hover {
+    transform: scale(1.02);
+    z-index: 10;
+}
+
+/* Conditional Styles */
+.dense-card.optimal {
+    background-color: var(--optimal-bg);
+    border-color: var(--optimal-border);
+    color: var(--optimal-text);
+}
+
+.dense-card.warning {
+    background-color: var(--warning-bg);
+    border-color: var(--warning-border);
+    color: var(--warning-text);
+}
+
+/* Internals */
+.dense-time {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--text-muted);
+}
+
+.dense-card.optimal .dense-time { color: var(--optimal-text); }
+.dense-card.warning .dense-time { color: var(--warning-text); }
+
+.dense-temp {
+    font-size: 1.25rem;
+    font-weight: 700;
+    line-height: 1;
+    margin: 0.25rem 0;
+}
+
+.dense-metrics {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 0.2rem;
+    background-color: rgba(255, 255, 255, 0.4);
+    border-radius: 4px;
+    padding: 0.25rem;
+}
+
+.dense-metric {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.2rem;
+    font-size: 0.75rem;
+    font-weight: 500;
+}
+
+.dense-icon {
+    width: 0.8rem;
+    height: 0.8rem;
+    opacity: 0.7;
+}
+
+.dense-icon-arrow {
+    width: 0.8rem;
+    height: 0.8rem;
+    margin-left: 0.2rem;
+    transition: transform 0.5s ease;
+}
