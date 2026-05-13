@@ -98,7 +98,7 @@ function App() {
 
                 {metadata && !loading && !error && (
                     <footer className="dashboard-footer">
-                        Datengrundlage: {metadata.model} Modelllauf vom {metadata.lastUpdated} Uhr
+                        Datengrundlage: {metadata.model} Modelllauf vom {metadata.lastUpdated} Uhr | Nächstes Update erwartet: ca. {metadata.nextUpdate} Uhr
                     </footer>
                 )}
             </main>

@@ -31,6 +31,9 @@ export async function fetchWeatherForecast(lat = 53.10, lon = 8.00) {
         
         const initTime = calculateIconD2InitTime();
         
+        // Calculate expected next update: initTime + 3 hours (cycle) + 2 hours (processing) = + 5 hours
+        const nextUpdateTime = new Date(initTime.getTime() + 5 * 60 * 60 * 1000);
+        
         // Format to local timezone for the UI
         const formattedDate = initTime.toLocaleDateString('de-DE', {
             day: '2-digit', month: '2-digit', year: 'numeric'
@@ -38,10 +41,14 @@ export async function fetchWeatherForecast(lat = 53.10, lon = 8.00) {
         const formattedTime = initTime.toLocaleTimeString('de-DE', {
             hour: '2-digit', minute: '2-digit'
         });
+        const formattedNextTime = nextUpdateTime.toLocaleTimeString('de-DE', {
+            hour: '2-digit', minute: '2-digit'
+        });
 
         const metadata = {
             model: "ICON-D2",
-            lastUpdated: `${formattedDate}, ${formattedTime}`
+            lastUpdated: `${formattedDate}, ${formattedTime}`,
+            nextUpdate: formattedNextTime
         };
 
         return {
