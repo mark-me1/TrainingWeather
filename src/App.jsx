@@ -88,12 +88,6 @@ function App() {
             <main className="dashboard-container">
                 <div className="dashboard-header">
                     <h2 className="location-title">{location.name}</h2>
-                    {metadata && (
-                        <div className="metadata-info">
-                            <span>Modell: {metadata.model}</span>
-                            <span>Stand: {metadata.lastUpdated}</span>
-                        </div>
-                    )}
                 </div>
 
                 {loading && <div className="loading-state">Lade Wetterdaten...</div>}
@@ -101,6 +95,12 @@ function App() {
                 {error && <div className="error-state">{error}</div>}
                 
                 {!loading && !error && <WeatherGrid weatherData={weatherData} />}
+
+                {metadata && !loading && !error && (
+                    <footer className="dashboard-footer">
+                        Datengrundlage: {metadata.model} Modelllauf vom {metadata.lastUpdated} Uhr
+                    </footer>
+                )}
             </main>
         </div>
     );

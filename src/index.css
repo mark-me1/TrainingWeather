@@ -116,13 +116,6 @@ body {
     margin-bottom: 0.25rem;
 }
 
-.metadata-info {
-    display: flex;
-    gap: 1rem;
-    font-size: 0.8rem;
-    color: var(--text-muted);
-}
-
 .loading-state, .error-state {
     text-align: center;
     padding: 3rem;
@@ -137,20 +130,42 @@ body {
     border: 1px solid var(--warning-border);
 }
 
+/* Day Dividers */
+.day-divider {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin: 1.5rem 0 0.75rem 0;
+    color: var(--text-main);
+    border-bottom: 2px solid var(--card-border);
+    padding-bottom: 0.25rem;
+}
+
+.day-group:first-child .day-divider {
+    margin-top: 0;
+}
+
 /* Weather Grid Redesign */
 .weather-grid {
     display: grid;
     /* 
        Auto-fit grid. Min-width is very tight (50px) to allow packing.
-       On large screens it expands to max 1fr, packing up to 24 columns nicely.
+       On large screens it expands to max 1fr, packing up to 24/36 columns nicely.
     */
     grid-template-columns: repeat(auto-fit, minmax(65px, 1fr));
     gap: 0.5rem;
-    padding-bottom: 2rem;
+}
+
+.dashboard-footer {
+    text-align: center;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin-top: 2.5rem;
+    padding: 1.5rem 0;
+    border-top: 1px solid var(--card-border);
 }
 
 /* Mobile Adjustments */
-@media (max-width: 640px) {
+@media (max-width: 768px) {
     .header {
         padding: 1rem;
     }
@@ -159,17 +174,14 @@ body {
         font-size: 1.5rem;
     }
 
+    /* Transform grid to list on mobile */
     .weather-grid {
-        grid-template-columns: repeat(6, 1fr); /* Force 6 columns on mobile */
-        gap: 0.35rem;
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
     }
     
     .location-title {
         font-size: 1.25rem;
-    }
-    
-    .metadata-info {
-        flex-direction: column;
-        gap: 0.1rem;
     }
 }

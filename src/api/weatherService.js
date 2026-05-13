@@ -29,15 +29,19 @@ export async function fetchWeatherForecast(lat = 53.10, lon = 8.00) {
         
         const data = await response.json();
         
-        // Use exact local time of fetch for the metadata timestamp
-        const lastUpdated = new Date().toLocaleString('de-DE', { 
-            day: '2-digit', month: '2-digit', year: 'numeric', 
-            hour: '2-digit', minute: '2-digit', second: '2-digit' 
+        const initTime = calculateIconD2InitTime();
+        
+        // Format to local timezone for the UI
+        const formattedDate = initTime.toLocaleDateString('de-DE', {
+            day: '2-digit', month: '2-digit', year: 'numeric'
+        });
+        const formattedTime = initTime.toLocaleTimeString('de-DE', {
+            hour: '2-digit', minute: '2-digit'
         });
 
         const metadata = {
             model: "ICON-D2",
-            lastUpdated: lastUpdated
+            lastUpdated: `${formattedDate}, ${formattedTime}`
         };
 
         return {
@@ -48,6 +52,31 @@ export async function fetchWeatherForecast(lat = 53.10, lon = 8.00) {
         console.error("Error fetching weather data:", error);
         throw error;
     }
+}
+
+/**
+ * Calculates the exact deterministic initialization time of the ICON-D2 model.
+ */
+function calculateIconD2InitTime() {
+    const now = new Date();
+    // Use current UTC time minus 2 hours (delay offset)
+    now.setUTCHours(now.getUTCHours() - 2);
+    
+    // Round down to nearest multiple of 3 (0, 3, 6, 9, 12, 15, 18, 21)
+    const initHour = Math.floor(now.getUTCHours() / 3) * 3;
+    
+    // Create new Date for exact initialization time
+    const initTime = new Date(Date.UTC(
+        now.getUTCFullYear(),
+        now.getUTCMonth(),
+        now.getUTCDate(),
+        initHour,
+        0,
+        0,
+        0
+    ));
+    
+    return initTime;
 }
 
 /**
