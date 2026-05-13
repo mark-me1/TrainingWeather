@@ -1,16 +1,31 @@
-# React + Vite
+# TrainingWeather 🚴🏃‍♂️
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+**TrainingWeather** ist ein spezialisiertes, hochpräzises 24-Stunden-Wetter-Dashboard, das speziell für die Planung von Outdoor-Trainingseinheiten (wie Triathlon, Radfahren und Laufen) optimiert wurde. Es liefert exakte Vorhersagen auf Stundenbasis, um das optimale Zeitfenster für das nächste Training zu finden.
 
-Currently, two official plugins are available:
+## 🛠️ Tech Stack & Hosting
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- **Frontend:** Entwickelt mit **React** und **Vite** für maximale Performance und schnelle Ladezeiten.
+- **Hosting & CI/CD:** Gehostet auf **GitHub Pages**. Die Bereitstellung erfolgt vollautomatisch über eine **GitHub Actions** CI/CD-Pipeline bei jedem Push in den Main-Branch.
 
-## React Compiler
+## 📡 Datenquelle
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- **Wetterdaten:** Nutzt die kostenlose und leistungsstarke **Open-Meteo API**.
+- **Wettermodell:** Setzt spezifisch auf das hochauflösende **"ICON-D2"** Modell des Deutschen Wetterdienstes (DWD), um extrem präzise, lokale Vorhersagen für Mitteleuropa zu gewährleisten.
+- **Geocoding:** Verwendet die Open-Meteo Geocoding API für die nahtlose und schnelle Ortssuche.
 
-## Expanding the ESLint configuration
+## ✨ Kernfunktionen
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- **24-Stunden-Vorhersage:** Detaillierte Anzeige von Temperatur, Niederschlag, Windgeschwindigkeit und Windrichtung (inklusive dynamisch rotierender Windpfeile).
+- **Smarte Ortssuche:** Integrierte Suchfunktion für beliebige Städte. Standardmäßig ist die App auf **Bad Zwischenahn** vorkonfiguriert.
+- **Trainingsbedingungen (Farbliche Hervorhebung):** 
+  - *Optimal* (Grün): Kein Niederschlag und Wind unter 20 km/h.
+  - *Warnung* (Rot): Niederschlag über 1 mm oder Wind über 40 km/h.
+- **Responsives UI-Design:**
+  - *Desktop:* Kompakte, dichte Grid-Ansicht (36 Stunden auf einem Bildschirm ohne horizontales Scrollen).
+  - *Mobile:* Touch-optimierte, vertikal scrollbare Listenansicht für perfekte Lesbarkeit im Freien.
+- **Tagesgrenzen:** Automatische Gruppierung der Vorhersagedaten nach Datum mit visuellen Trennlinien (z. B. "Heute", "Morgen") beim Überschreiten von Mitternacht.
+- **Datentransparenz (Custom Heuristic):** Ein spezieller, deterministischer Algorithmus berechnet clientseitig den exakten Initialisierungszeitpunkt des DWD ICON-D2 Modells sowie die erwartete Zeit für das nächste Update. Diese Daten werden transparent im Footer angezeigt, ohne dass fehleranfällige Metadaten-APIs aufgerufen werden müssen.
+
+---
+
+*Entwickelt für Athleten, die ihr Training nicht dem Zufall überlassen wollen.*
