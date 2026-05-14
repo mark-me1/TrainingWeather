@@ -17,7 +17,7 @@ export async function fetchWeatherForecast(lat = 53.10, lon = 8.00) {
     url.searchParams.append('latitude', lat);
     url.searchParams.append('longitude', lon);
     url.searchParams.append('hourly', 'temperature_2m,precipitation,wind_speed_10m,wind_direction_10m');
-    url.searchParams.append('models', 'icon_d2,icon_d2_ruc'); // Explicitly calling ICON-D2 and RUC
+    url.searchParams.append('models', 'icon_d2'); // Reverted to single model due to API error
     url.searchParams.append('timezone', 'auto');
     url.searchParams.append('forecast_days', '3');
 
@@ -119,17 +119,13 @@ function processHourlyData(hourlyData) {
     // Extract exactly 36 hours
     for (let i = startIndex; i < startIndex + 36; i++) {
         if (i < hourlyData.time.length) {
-            const hasRuc = hourlyData.temperature_2m_icon_d2_ruc && 
-                           hourlyData.temperature_2m_icon_d2_ruc[i] !== null && 
-                           hourlyData.temperature_2m_icon_d2_ruc[i] !== undefined;
-
             formattedData.push({
                 time: hourlyData.time[i],
-                temperature: hasRuc ? hourlyData.temperature_2m_icon_d2_ruc[i] : hourlyData.temperature_2m_icon_d2[i],
-                precipitation: hasRuc ? hourlyData.precipitation_icon_d2_ruc[i] : hourlyData.precipitation_icon_d2[i],
-                windSpeed: hasRuc ? hourlyData.wind_speed_10m_icon_d2_ruc[i] : hourlyData.wind_speed_10m_icon_d2[i],
-                windDirection: hasRuc ? hourlyData.wind_direction_10m_icon_d2_ruc[i] : hourlyData.wind_direction_10m_icon_d2[i],
-                isRuc: hasRuc
+                temperature: hourlyData.temperature_2m[i],
+                precipitation: hourlyData.precipitation[i],
+                windSpeed: hourlyData.wind_speed_10m[i],
+                windDirection: hourlyData.wind_direction_10m[i],
+                isRuc: false // Disabled pending API support for icon_d2_ruc
             });
         }
     }
