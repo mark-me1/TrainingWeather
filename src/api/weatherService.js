@@ -17,7 +17,7 @@ export async function fetchWeatherForecast(lat = 53.10, lon = 8.00) {
     url.searchParams.append('latitude', lat);
     url.searchParams.append('longitude', lon);
     url.searchParams.append('hourly', 'temperature_2m,precipitation,wind_speed_10m,wind_direction_10m');
-    url.searchParams.append('models', 'icon_d2'); // Explicitly calling ICON-D2 as requested
+    url.searchParams.append('models', 'icon_d2,icon_d2_ruc'); // Explicitly calling ICON-D2 and RUC
     url.searchParams.append('timezone', 'auto');
     url.searchParams.append('forecast_days', '3');
 
@@ -29,26 +29,16 @@ export async function fetchWeatherForecast(lat = 53.10, lon = 8.00) {
         
         const data = await response.json();
         
-        const initTime = calculateIconD2InitTime();
+        const initTimeIcon = calculateIconD2InitTime();
+        const initTimeRuc = calculateIconD2RucInitTime();
         
-        // Calculate expected next update: initTime + 3 hours (cycle) + 2 hours (processing) = + 5 hours
-        const nextUpdateTime = new Date(initTime.getTime() + 5 * 60 * 60 * 1000);
-        
-        // Format to local timezone for the UI
-        const formattedDate = initTime.toLocaleDateString('de-DE', {
-            day: '2-digit', month: '2-digit', year: 'numeric'
-        });
-        const formattedTime = initTime.toLocaleTimeString('de-DE', {
-            hour: '2-digit', minute: '2-digit'
-        });
-        const formattedNextTime = nextUpdateTime.toLocaleTimeString('de-DE', {
-            hour: '2-digit', minute: '2-digit'
-        });
+        const formatTime = (dateObj) => {
+            return dateObj.toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' });
+        };
 
         const metadata = {
-            model: "ICON-D2",
-            lastUpdated: `${formattedDate}, ${formattedTime}`,
-            nextUpdate: formattedNextTime
+            lastUpdatedIcon: formatTime(initTimeIcon),
+            lastUpdatedRuc: formatTime(initTimeRuc)
         };
 
         return {
@@ -87,6 +77,28 @@ function calculateIconD2InitTime() {
 }
 
 /**
+ * Calculates the exact deterministic initialization time of the ICON-D2-RUC model.
+ */
+function calculateIconD2RucInitTime() {
+    const now = new Date();
+    // Use current UTC time minus 1 hour (delay offset)
+    now.setUTCHours(now.getUTCHours() - 1);
+    
+    // Round down to nearest full hour
+    const initTime = new Date(Date.UTC(
+        now.getUTCFullYear(),
+        now.getUTCMonth(),
+        now.getUTCDate(),
+        now.getUTCHours(),
+        0,
+        0,
+        0
+    ));
+    
+    return initTime;
+}
+
+/**
  * Processes the raw hourly API response.
  * Filters for exactly the next 36 hours starting from the current hour.
  * @param {Object} hourlyData - Raw hourly data from Open-Meteo.
@@ -107,12 +119,17 @@ function processHourlyData(hourlyData) {
     // Extract exactly 36 hours
     for (let i = startIndex; i < startIndex + 36; i++) {
         if (i < hourlyData.time.length) {
+            const hasRuc = hourlyData.temperature_2m_icon_d2_ruc && 
+                           hourlyData.temperature_2m_icon_d2_ruc[i] !== null && 
+                           hourlyData.temperature_2m_icon_d2_ruc[i] !== undefined;
+
             formattedData.push({
                 time: hourlyData.time[i],
-                temperature: hourlyData.temperature_2m[i],
-                precipitation: hourlyData.precipitation[i],
-                windSpeed: hourlyData.wind_speed_10m[i],
-                windDirection: hourlyData.wind_direction_10m[i]
+                temperature: hasRuc ? hourlyData.temperature_2m_icon_d2_ruc[i] : hourlyData.temperature_2m_icon_d2[i],
+                precipitation: hasRuc ? hourlyData.precipitation_icon_d2_ruc[i] : hourlyData.precipitation_icon_d2[i],
+                windSpeed: hasRuc ? hourlyData.wind_speed_10m_icon_d2_ruc[i] : hourlyData.wind_speed_10m_icon_d2[i],
+                windDirection: hasRuc ? hourlyData.wind_direction_10m_icon_d2_ruc[i] : hourlyData.wind_direction_10m_icon_d2[i],
+                isRuc: hasRuc
             });
         }
     }

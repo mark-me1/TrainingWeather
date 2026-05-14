@@ -25,7 +25,7 @@ export default function WeatherCard({ data }) {
     return (
         <div className={`dense-card ${conditionClass}`}>
             <div className="dense-time">
-                {timeString}
+                {timeString}{data.isRuc && <span style={{ color: 'var(--text-muted)', marginLeft: '2px' }}>*</span>}
             </div>
             <div className="dense-temp">
                 {Math.round(data.temperature)}°

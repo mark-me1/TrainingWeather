@@ -68,7 +68,7 @@ function App() {
     return (
         <div className="app-container">
             <header className="header">
-                <h1>Trainingswetter</h1>
+                <h1>TrainingWeather</h1>
                 
                 {/* Search Bar */}
                 <form className="search-form" onSubmit={handleSearch}>
@@ -98,7 +98,9 @@ function App() {
 
                 {metadata && !loading && !error && (
                     <footer className="dashboard-footer">
-                        Datengrundlage: {metadata.model} Modelllauf vom {metadata.lastUpdated} Uhr | Nächstes Update erwartet: ca. {metadata.nextUpdate} Uhr
+                        <div style={{ marginBottom: '0.5rem', fontWeight: 600 }}>Datenstand:</div>
+                        <div>* RUC Nowcasting: Lauf von {metadata.lastUpdatedRuc} Uhr</div>
+                        <div>* ICON-D2 Basis: Lauf von {metadata.lastUpdatedIcon} Uhr</div>
                     </footer>
                 )}
             </main>
