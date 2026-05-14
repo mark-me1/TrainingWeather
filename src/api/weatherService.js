@@ -32,13 +32,18 @@ export async function fetchWeatherForecast(lat = 53.10, lon = 8.00) {
         const initTimeIcon = calculateIconD2InitTime();
         const initTimeRuc = calculateIconD2RucInitTime();
         
+        const nextUpdateIcon = new Date(initTimeIcon.getTime() + 5 * 60 * 60 * 1000); // 5 hours
+        const nextUpdateRuc = new Date(initTimeRuc.getTime() + 105 * 60 * 1000); // 1 hr 45 mins
+        
         const formatTime = (dateObj) => {
             return dateObj.toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' });
         };
 
         const metadata = {
             lastUpdatedIcon: formatTime(initTimeIcon),
-            lastUpdatedRuc: formatTime(initTimeRuc)
+            nextUpdateIcon: formatTime(nextUpdateIcon),
+            lastUpdatedRuc: formatTime(initTimeRuc),
+            nextUpdateRuc: formatTime(nextUpdateRuc)
         };
 
         return {

@@ -99,8 +99,8 @@ function App() {
                 {metadata && !loading && !error && (
                     <footer className="dashboard-footer">
                         <div style={{ marginBottom: '0.5rem', fontWeight: 600 }}>Datenstand:</div>
-                        <div>* RUC Nowcasting: Lauf von {metadata.lastUpdatedRuc} Uhr</div>
-                        <div>* ICON-D2 Basis: Lauf von {metadata.lastUpdatedIcon} Uhr</div>
+                        <div>* RUC Nowcasting: Lauf von {metadata.lastUpdatedRuc} Uhr (Nächstes Update ca. {metadata.nextUpdateRuc} Uhr)</div>
+                        <div>* ICON-D2 Basis: Lauf von {metadata.lastUpdatedIcon} Uhr (Nächstes Update ca. {metadata.nextUpdateIcon} Uhr)</div>
                     </footer>
                 )}
             </main>
